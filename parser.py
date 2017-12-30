@@ -81,7 +81,8 @@ for link in ico_links:
 	temp = [name, category, description, raised, sale, goal, website]
 	# print (temp)
 	upcoming_icos.append(temp)
-
+print (len(active_icos))
+print (len(upcoming_icos))
 print ("***************************Active ICOS******************************")
 print (active_icos)
 print ("***************************Upcoming ICOS****************************")
