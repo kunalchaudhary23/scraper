@@ -3,7 +3,7 @@ import urllib3
 import requests
 
 
-urllib3.disable_warnings() 
+requests.packages.urllib3.disable_warnings()
 
 r = requests.get('https://icodrops.com/category/active-ico/', verify=False)
 
