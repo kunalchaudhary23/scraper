@@ -2,6 +2,27 @@ from bs4 import BeautifulSoup
 import urllib3
 import requests
 
+# Data Structure:
+# {
+# 	name: "ICO NAME",
+# 	description: "description",
+# 	category: "ico stuff"
+# 	website: "http.website.com",
+# 	whitepaper: ".pdf",
+# 	twitter: "twitter.com",
+# 	telegram: "t.me",
+# 	slack: "slack",
+# 	team: [],
+# 	amt_raised = "232323",
+# 	soft_cap ="2342",
+# 	hard_cap ="232323",
+# 	pre_sale_date ="234234",
+# 	token_sale_date="324242",
+# 	total_supply ="2342442",
+# 	country =""
+# }
+
+
 
 requests.packages.urllib3.disable_warnings()
 
@@ -22,7 +43,6 @@ active_icos = []
 for link in ico_links:
 	r2 = requests.get(link, verify=False)
 	soup2 = BeautifulSoup(r2.text, 'html.parser')
-	# info = soup.find_all("div", "ico-desk")
 	name = soup2.find("div", "ico-main-info").h3.text
 	category = soup2.find("span", "ico-category-name").text
 	description = soup2.find("div", "ico-description").text
@@ -38,7 +58,25 @@ for link in ico_links:
 		except:
 			print ('error')
 	
-	temp = [name, category, description, raised, sale, goal, website]
+	
+
+	temp = {}
+	temp["name"] = name
+	temp["description"]= description
+	temp["category"]= category
+	temp["website"]= website
+	temp["whitepaper"]= ""
+	temp["twitter"]=""
+	temp["telegram"]= ""
+	temp["slack"]= ""
+	temp["team"]=[]
+	temp["amt_raised"]=raised
+	temp["soft_cap"]=""
+	temp["hard_cap"]=goal
+	temp["pre_sale_date"]=""
+	temp["token_sale_date"]=sale
+	temp["total_supply"]=""
+	temp["country"] =""
 
 	active_icos.append(temp)
 
@@ -62,7 +100,6 @@ upcoming_icos = []
 for link in ico_links:
 	r4 = requests.get(link, verify=False)
 	soup3 = BeautifulSoup(r4.text, 'html.parser')
-	# info = soup.find_all("div", "ico-desk")
 	name = soup3.find("div", "ico-main-info").h3.text
 	category = soup3.find("span", "ico-category-name").text
 	description = soup3.find("div", "ico-description").text
@@ -78,8 +115,25 @@ for link in ico_links:
 		except:
 			print ('error')
 	
-	temp = [name, category, description, raised, sale, goal, website]
-	# print (temp)
+	temp = {}
+	temp["name"] = name
+	temp["description"]= description
+	temp["category"]= category
+	temp["website"]= website
+	temp["whitepaper"]= ""
+	temp["twitter"]=""
+	temp["telegram"]= ""
+	temp["slack"]= ""
+	temp["team"]=[]
+	temp["amt_raised"]=raised
+	temp["soft_cap"]=""
+	temp["hard_cap"]=goal
+	temp["pre_sale_date"]=""
+	temp["token_sale_date"]=sale
+	temp["total_supply"]=""
+	temp["country"] =""
+		
+
 	upcoming_icos.append(temp)
 	
 print (len(active_icos))

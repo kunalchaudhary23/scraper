@@ -6,6 +6,27 @@ import pprint
 def hasNumbers(inputString):
 	return any(char.isdigit() for char in inputString)
 
+# Data Structure:
+# This one takes a while to run
+# {
+# 	name: "ICO NAME",
+# 	description: "description",
+# 	category: "ico stuff"
+# 	website: "http.website.com",
+# 	whitepaper: ".pdf",
+# 	twitter: "twitter.com",
+# 	telegram: "t.me",
+# 	slack: "slack",
+# 	team: [],
+# 	amt_raised = "232323",
+# 	soft_cap ="2342",
+# 	hard_cap ="232323",
+# 	pre_sale_date ="234234",
+# 	token_sale_date="324242",
+# 	total_supply ="2342442",
+# 	country =""
+# }
+
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -84,7 +105,7 @@ for link in links:
 			whitepaper = tab['href']
 
 	team = []
-	print (name)
+
 	members_all = soup2.find(id = "team").find_all('div', 'box')
 	members = []
 	if members_all:
@@ -95,68 +116,31 @@ for link in links:
 	for member in members:
 		if "linkedin" in member['href']:
 			team.append(member['href'])
-	temp = [name, desc, category, date, softcap, hardcap, country, twitter, slack, website, telegram, whitepaper, team]
-	print (temp)
+	
+	temp = {}
+	temp["name"] = name
+	temp["description"]= desc
+	temp["category"]= category
+	temp["website"]= website
+	temp["whitepaper"]= whitepaper
+	temp["twitter"]=twitter
+	temp["telegram"]=telegram
+	temp["slack"]= slack
+	temp["team"]=team
+	temp["amt_raised"]=""
+	temp["soft_cap"]=softcap
+	temp["hard_cap"]=hardcap
+	temp["pre_sale_date"]=""
+	temp["token_sale_date"]=date
+	temp["total_supply"]=""
+	temp["country"] =country
 	upcoming.append(temp)
 
 
 
+
 pp.pprint(upcoming)
-# 	desc = soup2.find("div", "project-desc").text
-# 	items = soup2.find("div","projectinfo").find_all("div", "infovalue")
-# 	# item_links = soup2.find("div","projectinfo").find_all("infoitem")
-# 	# for item_link in item_links:
-# 	# pp.pprint (items)
-# 	website = ""
-# 	whitepaper = ""
-# 	supply =""
-# 	category = ""
-# 	counter = 1;
-# 	for item in items:
-# 		# print (item)
-# 		if item.a:
-# 			# print (item.a)
-# 			if counter == 1:
-# 				website = item.a['href']
-				
-# 			if counter == 2:
-# 				# print ('here')
-# 				whitepaper = item.a['href']
-				
-# 				# print(whitepaper)
-# 			counter += 1
-# 		if hasNumbers(item.text[0]) or item.text == "TBD":
-# 			supply = item.text
 
-# 	for label in soup2.find("div","projectinfo").find_all("div", "infoitem"):
-# 		if label.find("div", "infolabel"):
-# 			if label.find("div","infolabel").text == "Category":
-# 				category = label.find("div","infovalue").text
-		
-
-# 	date = soup2.find("div","crowdfund").find("div", "infovalue date inline").text
-# 	print (name)
-# 	social_links = []
-# 	if soup2.find("div","project-links"):
-# 		social_links = soup2.find("div","project-links").find_all("a")
-# 	twitter = ""
-# 	telegram = ""
-# 	team =[]
-
-# 	for social_link in social_links:
-# 		if "twitter" in social_link['href']:
-# 			twitter = social_link['href']
-# 		if "t.me" in social_link['href']:
-# 			telegram = social_link['href']
-# 	if soup2.find("div","project-team"):
-# 		for link in soup2.find("div","project-team").find_all("a"):
-# 			team.append(link['href'])
-
-# 	print (team)
-
-# 	temp = [name, desc, website, category, supply, whitepaper, date, twitter, telegram, team]
-# 	upcoming.append(temp)
-# print (upcoming)
 
 
 

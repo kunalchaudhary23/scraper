@@ -6,6 +6,26 @@ import pprint
 def hasNumbers(inputString):
 	return any(char.isdigit() for char in inputString)
 
+# Data Structure:
+# {
+# 	name: "ICO NAME",
+# 	description: "description",
+# 	category: "ico stuff"
+# 	website: "http.website.com",
+# 	whitepaper: ".pdf",
+# 	twitter: "twitter.com",
+# 	telegram: "t.me",
+# 	slack: "slack",
+# 	team: [],
+# 	amt_raised = "232323",
+# 	soft_cap ="2342",
+# 	hard_cap ="232323",
+# 	pre_sale_date ="234234",
+# 	token_sale_date="324242",
+# 	total_supply ="2342442",
+# 	country =""
+# }
+
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -32,26 +52,22 @@ for link in links:
 	name = soup2.find("div", "project-heading").h1.text
 	desc = soup2.find("div", "project-desc").text
 	items = soup2.find("div","projectinfo").find_all("div", "infovalue")
-	# item_links = soup2.find("div","projectinfo").find_all("infoitem")
-	# for item_link in item_links:
-	# pp.pprint (items)
+
 	website = ""
 	whitepaper = ""
 	supply =""
 	category = ""
 	counter = 1;
 	for item in items:
-		# print (item)
+
 		if item.a:
-			# print (item.a)
+	
 			if counter == 1:
 				website = item.a['href']
 				
 			if counter == 2:
-				# print ('here')
 				whitepaper = item.a['href']
-				
-				# print(whitepaper)
+
 			counter += 1
 		if hasNumbers(item.text[0]) or item.text == "TBD":
 			supply = item.text
@@ -63,7 +79,6 @@ for link in links:
 		
 
 	date = soup2.find("div","crowdfund").find("div", "infovalue date inline").text
-	print (name)
 	social_links = []
 	if soup2.find("div","project-links"):
 		social_links = soup2.find("div","project-links").find_all("a")
@@ -80,10 +95,26 @@ for link in links:
 		for link in soup2.find("div","project-team").find_all("a"):
 			team.append(link['href'])
 
-	print (team)
 
-	temp = [name, desc, website, category, supply, whitepaper, date, twitter, telegram, team]
+	temp = {}
+	temp["name"] = name
+	temp["description"]= desc
+	temp["category"]= category
+	temp["website"]= website
+	temp["whitepaper"]= whitepaper
+	temp["twitter"]=twitter
+	temp["telegram"]=telegram
+	temp["slack"]= ""
+	temp["team"]=team
+	temp["amt_raised"]=""
+	temp["soft_cap"]=""
+	temp["hard_cap"]=""
+	temp["pre_sale_date"]=""
+	temp["token_sale_date"]=date
+	temp["total_supply"]=supply
+	temp["country"] =""
 	upcoming.append(temp)
+
 print (upcoming)
 
 
