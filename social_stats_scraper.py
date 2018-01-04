@@ -5,10 +5,10 @@ import time
 from pymongo import MongoClient
 
 client = MongoClient('127.0.0.1:27017')
-db = client.stats
+db = client.data
 
 def update_mongo(ico_name, stats):
-    result = db.stats.replace_one({
+    result = db.data.replace_one({
         '_id': ico_name
     }, {
         'stats': stats
@@ -34,7 +34,7 @@ def save_social_stats(infile, outfile_name):
     timestamp = time.mktime(datetime.now().timetuple())
     for key in data:
         ico = data[key]
-        existing_data = db.stats.find_one({'_id': key})
+        existing_data = db.data.find_one({'_id': key})
         if not existing_data:
             social_stats[key] = {
                 'telegram': [],

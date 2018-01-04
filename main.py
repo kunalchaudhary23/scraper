@@ -52,7 +52,8 @@ def add_to_data_without_duplicates(data, key, value):
         value['timestamp'] = time.mktime(datetime.now().timetuple())
     else: # Replace data
         for k in value:
-            data[key][k] = value[k]
+            if not value[k]:
+                data[key][k] = value[k]
 
 for scraper_fn in scraper_functions:
     active, upcoming = scraper_fn()
