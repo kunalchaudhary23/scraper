@@ -3,7 +3,6 @@ import urllib3
 import requests
 import time
 from selenium import webdriver
-from pyvirtualdisplay import Display
 
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
@@ -28,10 +27,9 @@ pp = pprint.PrettyPrinter(indent=4)
 # 	country =""
 # }
 def get_icos():
-	display = Display(visible=0, size=(800, 600))
-	display.start()
 	options = webdriver.ChromeOptions()    
 	options.add_argument('--headless')
+	options.add_argument('--no-sandbox')
 	browser = webdriver.Chrome(chrome_options=options)
 	url = 'http://www.icoalert.com/?q=&is_v=1'
 	browser.get(url)
