@@ -4,6 +4,7 @@ import requests
 import time
 from selenium import webdriver
 import pprint
+from pyvirtualdisplay import Display
 pp = pprint.PrettyPrinter(indent=4)
 
 # Data Structure:
@@ -27,6 +28,8 @@ pp = pprint.PrettyPrinter(indent=4)
 # }
 
 def get_icos():
+	display = Display(visible=0, size=(800, 600))
+	display.start()
 	options = webdriver.ChromeOptions()    
 	options.add_argument('--headless')
 	browser = webdriver.Chrome(chrome_options=options)
