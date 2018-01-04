@@ -19,7 +19,8 @@ import requests
 # 	pre_sale_date ="234234",
 # 	token_sale_date="324242",
 # 	total_supply ="2342442",
-# 	country =""
+# 	country ="",
+# 	tokentype =""
 # }
 
 
@@ -56,7 +57,7 @@ for link in ico_links:
 			if "source=icodrops" in a['href']:
 				website = a['href']
 		except:
-			print ('error')
+			# print ('error')
 
 	twitter = ""
 	telegram = ""
@@ -66,6 +67,13 @@ for link in ico_links:
 			twitter = social_link['href']
 		if "t.me" in social_link['href']:
 			telegram = social_link['href']
+
+	tokentype = ""
+	for item in soup2.find_all("li"):
+
+		if item.span and "Token type: " in item.span.text:
+			tokentype = item.text.split("Token type: ")[1]
+			
 
 	temp = {}
 	temp["name"] = name
@@ -84,6 +92,7 @@ for link in ico_links:
 	temp["token_sale_date"]=sale
 	temp["total_supply"]=""
 	temp["country"] =""
+	temp["tokentype"] = tokentype
 
 	active_icos.append(temp)
 
@@ -105,6 +114,7 @@ for tag in soup_upcoming.find_all("div", "ico-card"):
 
 upcoming_icos = []
 for link in ico_links:
+
 	r4 = requests.get(link, verify=False)
 	soup3 = BeautifulSoup(r4.text, 'html.parser')
 	name = soup3.find("div", "ico-main-info").h3.text
@@ -120,7 +130,7 @@ for link in ico_links:
 			if "source=icodrops" in a['href']:
 				website = a['href']
 		except:
-			print ('error')
+			print ('')
 
 	twitter = ""
 	telegram = ""
@@ -130,7 +140,11 @@ for link in ico_links:
 			twitter = social_link['href']
 		if "t.me" in social_link['href']:
 			telegram = social_link['href']
-	
+	tokentype = ""
+	for item in soup2.find_all("li"):
+
+		if item.span and "Token type: " in item.span.text:
+			tokentype = item.text.split("Token type: ")[1]
 	temp = {}
 	temp["name"] = name
 	temp["description"]= description
@@ -148,6 +162,7 @@ for link in ico_links:
 	temp["token_sale_date"]=sale
 	temp["total_supply"]=""
 	temp["country"] =""
+	temp["tokentype"] = tokentype
 		
 	upcoming_icos.append(temp)
 

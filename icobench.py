@@ -76,7 +76,7 @@ for link in links:
 	softcap = ""
 	hardcap = ""
 	country = ""
-
+	tokentype =""
 	for item in financial_data.find_all("div", "data_row"):
 
 		cols = item.find_all("div", "col_2")
@@ -86,6 +86,8 @@ for link in links:
 			hardcap = cols[1].text
 		if  "Country" in cols[0].text:
 			country = cols[1].text
+		if  "Platform" in cols[0].text:
+			tokentype = cols[1].text
 	twitter =""
 	if soup2.find("a", "twitter"):
 		twitter = soup2.find("a", "twitter")['href']
@@ -134,6 +136,7 @@ for link in links:
 	temp["token_sale_date"]=date
 	temp["total_supply"]=""
 	temp["country"] =country
+	temp["tokentype"] =tokentype
 	upcoming.append(temp)
 
 

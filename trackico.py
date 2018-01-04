@@ -52,10 +52,13 @@ for link in links:
 	pre_sale_date = dates[0].find("div", "flexbox mt-2").text
 	token_sale_date = dates[1].find("div", "flexbox mt-2").text
 	country =""
+	tokentype=""
 	boxes = soup2.find_all("div", "card card-body")
 	for box in boxes:
 		if box.h6 and "Country" in box.h6.text and box.find_all('span', 'fs-30'):
 			country = box.find_all('span', 'fs-30')[1].text
+		if box.h6 and "Platform" in box.h6.text and box.find_all('span', 'fs-30') and box.find_all('span', 'fs-30')[1].a:
+			tokentype = box.find_all('span', 'fs-30')[1].a.text
 
 	team = []
 	members = soup2.find(id = "tab-team").find_all("a")
@@ -96,6 +99,7 @@ for link in links:
 	temp["token_sale_date"]=token_sale_date
 	temp["total_supply"]=""
 	temp["country"] = country
+	temp["tokentype"] = tokentype
 	pre_sale.append(temp)
 pp.pprint(pre_sale)
 
@@ -134,6 +138,7 @@ while len(soup.find_all("a", "btn btn-w-sm btn-light")) == 2:
 
 upcoming = []
 for link in links:
+
 	r2 = requests.get(link, verify=False)
 	soup2 = BeautifulSoup(r2.text, 'html.parser')
 	name = soup2.find("li", "breadcrumb-item active").text
@@ -144,10 +149,13 @@ for link in links:
 	pre_sale_date = dates[0].find("div", "flexbox mt-2").text
 	token_sale_date = dates[1].find("div", "flexbox mt-2").text
 	country =""
+	tokentype =""
 	boxes = soup2.find_all("div", "card card-body")
 	for box in boxes:
 		if box.h6 and "Country" in box.h6.text and box.find_all('span', 'fs-30'):
 			country = box.find_all('span', 'fs-30')[1].text
+		if box.h6 and "Platform" in box.h6.text and box.find_all('span', 'fs-30') and box.find_all('span', 'fs-30')[1].a:
+			tokentype = box.find_all('span', 'fs-30')[1].a.text
 
 	team = []
 	members = soup2.find(id = "tab-team").find_all("a")
@@ -186,6 +194,7 @@ for link in links:
 	temp["token_sale_date"]=token_sale_date
 	temp["total_supply"]=""
 	temp["country"] = country
+	temp["tokentype"] = tokentype
 	upcoming.append(temp)
 
 pp.pprint(upcoming)
