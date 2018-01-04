@@ -1,26 +1,36 @@
 from bs4 import BeautifulSoup
-import requests
+from requests_futures.sessions import FuturesSession
 
-telegram_invite_url = 'https://t.me/aidcoincommunity'
-twitter_url = 'https://twitter.com/aid_coin'
+def parse_telegram_background(session, response):
+	try:
+		soup = BeautifulSoup(response.text, 'html.parser')
+
+		size = soup.find('div', 'tgme_page_extra').text
+		size = size.replace(' ', '').replace('members', '')
+
+		response.data = int(size)
+	except:
+		response.data = 'N/A'
 
 def get_telegram_size(url):
-	r = requests.get(url)
-	soup = BeautifulSoup(r.text, 'html.parser')
+	session = FuturesSession(max_workers=100)
+	future = session.get(url, background_callback=parse_telegram_background)
 
-	size = soup.find('div', 'tgme_page_extra').text
-	size = size.replace(' ', '').replace('members', '')
+	return future
 
-	return int(size)
+def parse_twitter_background(session, response):
+	try:
+		soup = BeautifulSoup(response.text, 'html.parser')
+
+		size = soup.find('a', {'data-nav': 'followers'})['title']
+		size = size.replace(',', '').replace(' ', '').replace('Followers', '')
+
+		response.data = int(size)
+	except:
+		response.data = 'N/A'
 
 def get_twitter_size(url):
-	r = requests.get(url)
-	soup = BeautifulSoup(r.text, 'html.parser')
+	session = FuturesSession(max_workers=100)
+	future = session.get(url, background_callback=parse_twitter_background)
 
-	size = soup.find('a', {'data-nav': 'followers'})['title']
-	size = size.replace(',', '').replace(' ', '').replace('Followers', '')
-
-	return int(size)
-
-print(get_telegram_size(telegram_invite_url))
-print(get_twitter_size(twitter_url))
+	return future
