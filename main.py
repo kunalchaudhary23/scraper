@@ -8,6 +8,9 @@ import icodrops
 
 import json
 
+from datetime import datetime, timedelta
+import time
+
 # Data Structure:
 # {
 #   name: "ICO NAME",
@@ -28,8 +31,6 @@ import json
 #   country =""
 # }
 
-# upcoming = get_icobench_icos()
-
 scraper_functions = [
     icoalert_pre_sale.get_icos,
     icoalert_normal.get_icos,
@@ -44,12 +45,13 @@ upcoming_data = {}
 
 def add_to_data_without_duplicates(data, key, value):
     # Strip whitespace and make name all lowercase to find clashes
-    key = "".join(key.split()).lower()
-    value['name'] = value['name'].strip().replace('.', '')
+    key = "".join(key.split()).lower().replace('.', '')
+    value['name'] = value['name'].strip()
     if key not in data:
         data[key] = value
+        value['timestamp'] = time.mktime(datetime.now().timetuple())
     else: # Replace data
-        for k in data[key]:
+        for k in value:
             data[key][k] = value[k]
 
 for scraper_fn in scraper_functions:

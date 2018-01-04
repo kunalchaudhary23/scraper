@@ -11,7 +11,7 @@ def update_mongo(ico_name, stats):
     result = db.stats.replace_one({
         '_id': ico_name
     }, {
-        ico_name: stats
+        'stats': stats
     }, upsert=True)
 
 def roundTime(dt=None, roundTo=60):
@@ -36,18 +36,18 @@ def save_social_stats(infile, outfile_name):
         ico = data[key]
         existing_data = db.stats.find_one({'_id': key})
         if not existing_data:
-            social_stats[ico['name']] = {
+            social_stats[key] = {
                 'telegram': [],
                 'twitter': []
             }
         else:
-            social_stats[ico['name']] = results['stats']
+            social_stats[key] = existing_data['stats']
 
         if len(ico['telegram']) > 0:
-            telegram_futures[ico['name']] = get_telegram_size(ico['telegram'])
+            telegram_futures[key] = get_telegram_size(ico['telegram'])
 
         if len(ico['twitter']) > 0:
-            twitter_futures[ico['name']] = get_twitter_size(ico['twitter'])
+            twitter_futures[key] = get_twitter_size(ico['twitter'])
 
     for key in telegram_futures:
         social_stats[key]['telegram'].append((timestamp, telegram_futures[key].result().data))
@@ -56,7 +56,7 @@ def save_social_stats(infile, outfile_name):
         social_stats[key]['twitter'].append((timestamp, twitter_futures[key].result().data))
 
     for key in social_stats:
-        update_mongo(key, {'stats': social_stats[key]})
+        update_mongo(key, social_stats[key])
 
 with open('active.json') as infile:
     save_social_stats(infile, 'active_social_stats')
