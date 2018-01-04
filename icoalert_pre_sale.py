@@ -68,8 +68,8 @@ for ico in pre_sale_icos:
 	temp["amt_raised"]=""
 	temp["soft_cap"]=""
 	temp["hard_cap"]=""
-	temp["pre_sale_date"]=""
-	temp["token_sale_date"]=date
+	temp["pre_sale_date"]=date
+	temp["token_sale_date"]=""
 	temp["total_supply"]=""
 	temp["country"] =""
 
@@ -105,8 +105,8 @@ for ico in pre_sale_upcoming_icos:
 	temp["amt_raised"]=""
 	temp["soft_cap"]=""
 	temp["hard_cap"]=""
-	temp["pre_sale_date"]=""
-	temp["token_sale_date"]=date
+	temp["pre_sale_date"]=date
+	temp["token_sale_date"]=
 	temp["total_supply"]=""
 	temp["country"] =""
 	pre_sale_upcoming.append(temp)
