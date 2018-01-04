@@ -57,8 +57,15 @@ for link in ico_links:
 				website = a['href']
 		except:
 			print ('error')
-	
-	
+
+	twitter = ""
+	telegram = ""
+	social_links = soup2.find("div", "soc_links").find_all('a')
+	for social_link in social_links:
+		if "twitter" in social_link['href']:
+			twitter = social_link['href']
+		if "t.me" in social_link['href']:
+			telegram = social_link['href']
 
 	temp = {}
 	temp["name"] = name
@@ -66,8 +73,8 @@ for link in ico_links:
 	temp["category"]= category
 	temp["website"]= website
 	temp["whitepaper"]= ""
-	temp["twitter"]=""
-	temp["telegram"]= ""
+	temp["twitter"]=twitter
+	temp["telegram"]= telegram
 	temp["slack"]= ""
 	temp["team"]=[]
 	temp["amt_raised"]=raised
@@ -114,6 +121,15 @@ for link in ico_links:
 				website = a['href']
 		except:
 			print ('error')
+
+	twitter = ""
+	telegram = ""
+	social_links = soup2.find("div", "soc_links").find_all('a')
+	for social_link in social_links:
+		if "twitter" in social_link['href']:
+			twitter = social_link['href']
+		if "t.me" in social_link['href']:
+			telegram = social_link['href']
 	
 	temp = {}
 	temp["name"] = name
@@ -121,8 +137,8 @@ for link in ico_links:
 	temp["category"]= category
 	temp["website"]= website
 	temp["whitepaper"]= ""
-	temp["twitter"]=""
-	temp["telegram"]= ""
+	temp["twitter"]= twitter
+	temp["telegram"]= telegram
 	temp["slack"]= ""
 	temp["team"]=[]
 	temp["amt_raised"]=raised
@@ -133,9 +149,8 @@ for link in ico_links:
 	temp["total_supply"]=""
 	temp["country"] =""
 		
-
 	upcoming_icos.append(temp)
-	
+
 print (len(active_icos))
 print (len(upcoming_icos))
 print ("***************************Active ICOS******************************")
