@@ -5,6 +5,73 @@ import time
 
 import numpy as np
 
+def roundTime(dt=None, roundTo=60):
+   """Round a datetime object to any time laps in seconds
+   dt : datetime.datetime object, default now.
+   roundTo : Closest number of seconds to round to, default 1 minute.
+   Author: Thierry Husson 2012 - Use it as you want but don't blame me.
+   """
+   if dt == None : dt = datetime.now()
+   seconds = (dt.replace(tzinfo=None) - dt.min).seconds
+   rounding = (seconds+roundTo/2) // roundTo * roundTo
+   return dt + timedelta(0,rounding-seconds,-dt.microsecond)
+
+def find_nearest(array, value):
+    idx = (np.abs(array-value)).argmin()
+    return idx
+
+def get_datapoint_closest_to_datetime(datapoints, datetime):
+    timestamp = time.mktime(datetime.timetuple())
+    # Parse out 'N/A' values...
+    cleaned_datapoints = [point for point in datapoints if point[1] != 'N/A']
+    cleaned_datapoints = np.array(cleaned_datapoints, dtype='f')
+
+    if len(cleaned_datapoints) > 0:
+        index = find_nearest(cleaned_datapoints[:,0], timestamp)
+
+        return list(cleaned_datapoints[index])
+
+    return None
+
+def get_top_growth(data, amount, min_size, social_type, start_datetime, end_datetime): # Returns an array of keys of length amount with the highest designated social type's growth %
+    key_to_growth = {}
+    for key in data:
+        datapoints = data[key]['stats'][social_type]
+        first_point = get_datapoint_closest_to_datetime(datapoints, start_datetime)
+        last_point = get_datapoint_closest_to_datetime(datapoints, end_datetime)
+        if first_point and last_point and first_point[1] >= min_size:
+            key_to_growth[key] = [(last_point[1] - first_point[1])/first_point[1], first_point, last_point]
+
+    top_keys = sorted(key_to_growth, key=key_to_growth.get)
+
+    top_keys_with_growth = [[key, key_to_growth[key]] for key in top_keys]
+
+    return reversed(top_keys_with_growth[-amount:])
+
+def get_top(data, amount, social_type, start_datetime, end_datetime):
+    key_to_size = {}
+    for key in data:
+        datapoints = data[key]['stats'][social_type]
+        last_point = get_datapoint_closest_to_datetime(datapoints, end_datetime)
+        if last_point:
+            key_to_size[key] = [last_point[1]]
+
+    top_keys = sorted(key_to_size, key=key_to_size.get)
+
+    top_keys_with_size = [[key, key_to_size[key]] for key in top_keys]
+
+    return reversed(top_keys_with_size[-amount:])
+
+def get_keys_in_range(data, start_datetime, end_datetime):
+    keys = []
+    for key in data:
+        start_time = time.mktime(start_datetime.timetuple())
+        end_time = time.mktime(end_datetime.timetuple())
+
+        if data[key]['timestamp'] >= start_time and data[key]['timestamp'] <= end_time:
+            keys.append(key)
+
+    return keys
 
 # Data Structure:
 # {
@@ -26,56 +93,35 @@ import numpy as np
 #   country =""
 # }
 
-def roundTime(dt=None, roundTo=60):
-   """Round a datetime object to any time laps in seconds
-   dt : datetime.datetime object, default now.
-   roundTo : Closest number of seconds to round to, default 1 minute.
-   Author: Thierry Husson 2012 - Use it as you want but don't blame me.
-   """
-   if dt == None : dt = datetime.now()
-   seconds = (dt.replace(tzinfo=None) - dt.min).seconds
-   rounding = (seconds+roundTo/2) // roundTo * roundTo
-   return dt + timedelta(0,rounding-seconds,-dt.microsecond)
+def get_ico_details(data, key):
+    details = data[key]
+    name = details['name']
+    whitepaper = details['whitepaper'] if details['whitepaper'] else 'N/A'
+    return 'Name: %s - Whitepaper: %s -' % (name, whitepaper)
 
-def find_nearest(array, value):
-    idx = (np.abs(array-value)).argmin()
-    return idx
+def format_growth_keys(top_growth_keys):
+    for info in top_growth_keys:
+        key = info[0]
+        stats = info[1]
+        growth_percentage = stats[0] * 100
+        first_point = stats[1]
+        last_point = stats[2]
+        details = get_ico_details(upcoming, key)
+        format_tuple = (growth_percentage, first_point[1], last_point[1])
+        print(details)
+        print('Grew %.2f%% from %i followers to %i followers.' % format_tuple)
+        print()
 
-def get_growth_percentage(datapoints, start_datetime, end_datetime):
-    if len(datapoints) > 0:
-        start_time = time.mktime(start_datetime.timetuple())
-        end_time = time.mktime(end_datetime.timetuple())
-
-        if datapoints[-1][1] != 'N/A':
-            datapoints = np.array(datapoints, dtype='f')
-
-            first_index = find_nearest(datapoints[:,0], start_time)
-            last_index = find_nearest(datapoints[:,0], end_time)
-
-            first_point = datapoints[first_index]
-            last_point = datapoints[last_index]
-
-            # utc_time = datetime.fromtimestamp(first_point[0], timezone.utc)
-            # local_time = utc_time.astimezone()
-            # first_time = local_time.strftime("%Y-%m-%d %H:%M:%S.%f%z (%Z)")
-            
-            # utc_time = datetime.fromtimestamp(last_point[0], timezone.utc)
-            # local_time = utc_time.astimezone()
-            # second_time = local_time.strftime("%Y-%m-%d %H:%M:%S.%f%z (%Z)")
-            return (last_point[1] - first_point[1])/(first_point[1])
-    
-    return 0
-
-def get_top_growth(data, amount, social_type, start_datetime, end_datetime): # Returns an array of keys of length amount with the highest designated social type's growth %
-    key_to_growth = {}
-    for key in data:
-        key_to_growth[key] = get_growth_percentage(data[key]['stats'][social_type], start_datetime, end_datetime)
-
-    top_keys = sorted(key_to_growth, key=key_to_growth.get)
-
-    top_keys_with_growth = [[key, key_to_growth[key]] for key in top_keys]
-
-    return top_keys_with_growth
+def format_keys(top_keys):
+    for info in top_keys:
+        key = info[0]
+        stats = info[1]
+        size = stats[0]
+        details = get_ico_details(upcoming, key)
+        format_tuple = (size)
+        print(details) 
+        print('%i Twitter followers.' % format_tuple)
+        print()
 
 with open('upcoming.json') as upcoming:
     upcoming = json.load(upcoming)
@@ -91,5 +137,32 @@ with open('upcoming.json') as upcoming:
         start_datetime = datetime.now() - timedelta(days=7)
         end_datetime = datetime.now()
 
-        top_twitter_growth_keys = get_top_growth(upcoming, 10, 'twitter', start_datetime, end_datetime)
-        print(top_twitter_growth_keys)
+        top_twitter_growth_keys = get_top_growth(upcoming, 10, 100, 'twitter', start_datetime, end_datetime)
+        print('Top 10 ICOs with greatest Twitter growth percentage over the last week')
+        format_growth_keys(top_twitter_growth_keys)
+
+        print('#####################')
+        print('#####################')
+        print('#####################')
+
+        top_twitter_keys = get_top(upcoming, 10, 'twitter', start_datetime, end_datetime)
+        print('Top 10 ICOs with the most Twitter followers')
+        format_keys(top_twitter_keys)
+
+        print('#####################')
+        print('#####################')
+        print('#####################')
+
+        top_telegram_growth_keys = get_top_growth(upcoming, 10, 100, 'telegram', start_datetime, end_datetime)
+        print('Top 10 ICOs with greatest Telegram growth percentage over the last week')
+        format_growth_keys(top_telegram_growth_keys)
+
+        print('#####################')
+        print('#####################')
+        print('#####################')
+
+        top_telegram_keys = get_top(upcoming, 10, 'telegram', start_datetime, end_datetime)
+        print('Top 10 ICOs with the most Telegram followers')
+        format_keys(top_telegram_keys)
+
+        recent_keys = get_keys_in_range(upcoming, datetime.now() - timedelta(days=3), datetime.now())
