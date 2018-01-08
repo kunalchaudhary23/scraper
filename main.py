@@ -32,11 +32,11 @@ import time
 # }
 
 scraper_functions = [
-    icoalert_pre_sale.get_icos,
-    icoalert_normal.get_icos,
-    coinschedule.get_icos,
-    trackico.get_icos,
-    icobench.get_icos,
+    # icoalert_pre_sale.get_icos,
+    # icoalert_normal.get_icos,
+    # coinschedule.get_icos,
+    # trackico.get_icos,
+    # icobench.get_icos,
     icodrops.get_icos
 ]
 
@@ -50,10 +50,10 @@ def add_to_data_without_duplicates(data, key, value):
     if key not in data:
         data[key] = value
         value['timestamp'] = time.mktime(datetime.now().timetuple())
-    else: # Replace data
-        for k in value:
-            if value[k]:
-                data[key][k] = value[k]
+    
+    for k in value:
+        if value[k]:
+            data[key][k] = value[k]
 
 for scraper_fn in scraper_functions:
     active, upcoming = scraper_fn()

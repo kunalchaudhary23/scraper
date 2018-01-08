@@ -10,7 +10,7 @@ def parse_telegram_background(session, response):
 
 		response.data = int(size)
 	except:
-		response.data = 'N/A'
+		response.data = '-1'
 
 def get_telegram_size(url):
 	session = FuturesSession(max_workers=100)
@@ -27,7 +27,7 @@ def parse_twitter_background(session, response):
 
 		response.data = int(size)
 	except:
-		response.data = 'N/A'
+		response.data = '-1'
 
 def get_twitter_size(url):
 	session = FuturesSession(max_workers=100)
