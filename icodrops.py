@@ -134,14 +134,14 @@ for link in ico_links:
 
 	twitter = ""
 	telegram = ""
-	social_links = soup2.find("div", "soc_links").find_all('a')
+	social_links = soup3.find("div", "soc_links").find_all('a')
 	for social_link in social_links:
 		if "twitter" in social_link['href']:
 			twitter = social_link['href']
 		if "t.me" in social_link['href']:
 			telegram = social_link['href']
 	tokentype = ""
-	for item in soup2.find_all("li"):
+	for item in soup3.find_all("li"):
 
 		if item.span and "Token type: " in item.span.text:
 			tokentype = item.text.split("Token type: ")[1]
