@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import urllib3
 import requests
 import time
+from selenium import webdriver
 
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
@@ -25,93 +26,89 @@ pp = pprint.PrettyPrinter(indent=4)
 # 	total_supply ="2342442",
 # 	country =""
 # }
+def get_icos():
+	options = webdriver.ChromeOptions()    
+	options.add_argument('--headless')
+	options.add_argument('--no-sandbox')
+	browser = webdriver.Chrome(chrome_options=options)
+	url = 'http://www.icoalert.com/?q=&is_v=1'
+	browser.get(url)
 
-from selenium import webdriver
-path_to_chromedriver = '/Users/kunalchaudhary/Documents/scraper/chromedriver' # change path as needed
-browser = webdriver.Chrome(executable_path = path_to_chromedriver)
-url = 'http://www.icoalert.com/?q=&is_v=1'
-browser.get(url)
+	for i in range (10):
+		browser.execute_script('window.scrollTo(0,document.body.scrollHeight)');
+		time.sleep(1)
 
+	soup = BeautifulSoup(browser.page_source, 'html.parser')
 
-for i in range (10):
-	browser.execute_script('window.scrollTo(0,document.body.scrollHeight)');
-	time.sleep(1)
+	pre_sale_active = soup.find(id="presale-active-listed-ico")
+	pre_sale_listings = pre_sale_active.find("div", "listings presale")
+	pre_sale_icos = pre_sale_listings.find_all("div", "ico-wrap")
 
+	pre_sale_active = []
 
-soup = BeautifulSoup(browser.page_source, 'html.parser')
+	for ico in pre_sale_icos:
 
+		name = ico.find("div", "about").h3.text.split("—")[0]
+		description = ico.find("div", "about").h3.text.split("—")[1]
+		date = ico.find("div", "date").p.text.split("DAYS LEFT")[0]
+		website = ico.find("div", "website").a['href']
+		
 
-pre_sale_active = soup.find(id="presale-active-listed-ico")
-pre_sale_listings = pre_sale_active.find("div", "listings presale")
-pre_sale_icos = pre_sale_listings.find_all("div", "ico-wrap")
+		temp = {}
+		temp["name"] = name
+		temp["description"]= description
+		temp["category"]= ""
+		temp["website"]= website
+		temp["whitepaper"]= ""
+		temp["twitter"]=""
+		temp["telegram"]= ""
+		temp["slack"]= ""
+		temp["team"]=[]
+		temp["amt_raised"]=""
+		temp["soft_cap"]=""
+		temp["hard_cap"]=""
+		temp["pre_sale_date"]=date
+		temp["token_sale_date"]=""
+		temp["total_supply"]=""
+		temp["country"] =""
 
-pre_sale_active = []
+		pre_sale_active.append(temp)
 
-for ico in pre_sale_icos:
+	pre_sale_upcoming = soup.find(id="presale-upcoming-listed-ico")
+	pre_sale_upcoming_listings = pre_sale_upcoming.find("div", "not-tbd listings presale")
+	pre_sale_upcoming_icos = pre_sale_upcoming_listings.find_all("div", "ico-wrap")
 
-	name = ico.find("div", "about").h3.text.split("—")[0]
-	description = ico.find("div", "about").h3.text.split("—")[1]
-	date = ico.find("div", "date").p.text.split("DAYS LEFT")[0]
-	website = ico.find("div", "website").a['href']
-	
+	pre_sale_upcoming = []
+	for ico in pre_sale_upcoming_icos:
 
-	temp = {}
-	temp["name"] = name
-	temp["description"]= description
-	temp["category"]= ""
-	temp["website"]= website
-	temp["whitepaper"]= ""
-	temp["twitter"]=""
-	temp["telegram"]= ""
-	temp["slack"]= ""
-	temp["team"]=[]
-	temp["amt_raised"]=""
-	temp["soft_cap"]=""
-	temp["hard_cap"]=""
-	temp["pre_sale_date"]=date
-	temp["token_sale_date"]=""
-	temp["total_supply"]=""
-	temp["country"] =""
+		name = ico.find("div", "about").h3.text.split("—")[0]
 
-	pre_sale_active.append(temp)
+		description = ico.find("div", "about").h3.text.split("—")[1]
+		date = ico.find("div", "date").p.text
+		website = ico.find("div", "website").a['href']
 
+		temp ={}
+		temp["name"] = name
+		temp["description"]= description
+		temp["category"]= ""
+		temp["website"]= website
+		temp["whitepaper"]= ""
+		temp["twitter"]=""
+		temp["telegram"]= ""
+		temp["slack"]= ""
+		temp["team"]=[]
+		temp["amt_raised"]=""
+		temp["soft_cap"]=""
+		temp["hard_cap"]=""
+		temp["pre_sale_date"]=date
+		temp["token_sale_date"]=""
+		temp["total_supply"]=""
+		temp["country"] =""
+		pre_sale_upcoming.append(temp)
 
+	# We treat all pre-sales as upcoming.
+	pre_sale_upcoming.extend(pre_sale_active)
 
+	browser.quit()
 
-pre_sale_upcoming = soup.find(id="presale-upcoming-listed-ico")
-pre_sale_upcoming_listings = pre_sale_upcoming.find("div", "not-tbd listings presale")
-pre_sale_upcoming_icos = pre_sale_upcoming_listings.find_all("div", "ico-wrap")
-
-
-pre_sale_upcoming = []
-for ico in pre_sale_upcoming_icos:
-
-	name = ico.find("div", "about").h3.text.split("—")[0]
-
-	description = ico.find("div", "about").h3.text.split("—")[1]
-	date = ico.find("div", "date").p.text
-	website = ico.find("div", "website").a['href']
-
-	temp ={}
-	temp["name"] = name
-	temp["description"]= description
-	temp["category"]= ""
-	temp["website"]= website
-	temp["whitepaper"]= ""
-	temp["twitter"]=""
-	temp["telegram"]= ""
-	temp["slack"]= ""
-	temp["team"]=[]
-	temp["amt_raised"]=""
-	temp["soft_cap"]=""
-	temp["hard_cap"]=""
-	temp["pre_sale_date"]=date
-	temp["token_sale_date"]=
-	temp["total_supply"]=""
-	temp["country"] =""
-	pre_sale_upcoming.append(temp)
-
-
-pp.pprint(pre_sale_active)
-pp.pprint("UPCOMIG****************************************")
-pp.pprint(pre_sale_upcoming)
+	return [], pre_sale_upcoming
