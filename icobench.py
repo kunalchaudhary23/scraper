@@ -95,7 +95,7 @@ def get_icos():
 			website = soup2.find("a", "www")['href']
 		telegram = ""
 		if soup2.find("a", "telegram"):
-			website = soup2.find("a", "telegram")['href']
+			telegram = soup2.find("a", "telegram")['href']
 
 		whitepaper =""
 		for tab in soup2.find("div", "tabs").find_all("a"):
