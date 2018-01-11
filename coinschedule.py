@@ -36,19 +36,30 @@ def get_icos():
 	soup = BeautifulSoup(r.text, 'html.parser')
 
 	table = soup.find("div", "upcoming")
+
 	body = table.find("tbody")
 	icos = body.find_all("a")
 	links =[]
 	for ico in icos:
+		print (ico)
 		links.append(ico['href'])
+
 
 	upcoming =[]
 	for link in links:
+
 		r2 = requests.get(link, verify=False)
 		soup2 = BeautifulSoup(r2.text, 'html.parser')
-		name = soup2.find("div", "project-heading").h1.text
-		desc = soup2.find("div", "project-desc").text
-		items = soup2.find("div","projectinfo").find_all("div", "infovalue")
+		name =""
+		if soup2.find("div", "project-heading"):
+			name = soup2.find("div", "project-heading").h1.text
+		desc = ""
+		if soup2.find("div", "project-desc"):
+			desc = soup2.find("div", "project-desc").text
+
+		items = ""
+		if soup2.find("div","projectinfo") and soup2.find("div","projectinfo").find_all("div", "infovalue"):
+			items = soup2.find("div","projectinfo").find_all("div", "infovalue")
 
 		website = ""
 		whitepaper = ""
@@ -68,14 +79,16 @@ def get_icos():
 				counter += 1
 			if hasNumbers(item.text[0]) or item.text == "TBD":
 				supply = item.text
-
-		for label in soup2.find("div","projectinfo").find_all("div", "infoitem"):
-			if label.find("div", "infolabel"):
-				if label.find("div","infolabel").text == "Category":
-					category = label.find("div","infovalue").text
+		if soup2.find("div","projectinfo") and soup2.find("div","projectinfo").find_all("div", "infoitem"):
+			for label in soup2.find("div","projectinfo").find_all("div", "infoitem"):
+				if label.find("div", "infolabel"):
+					if label.find("div","infolabel").text == "Category":
+						category = label.find("div","infovalue").text
 			
 
-		date = soup2.find("div","crowdfund").find("div", "infovalue date inline").text
+		date = ""
+		if soup2.find("div","crowdfund") and soup2.find("div","crowdfund").find("div", "infovalue date inline"):
+			date = soup2.find("div","crowdfund").find("div", "infovalue date inline").text
 		social_links = []
 		if soup2.find("div","project-links"):
 			social_links = soup2.find("div","project-links").find_all("a")
