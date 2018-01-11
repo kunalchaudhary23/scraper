@@ -43,6 +43,12 @@ scraper_functions = [
 active_data = {}
 upcoming_data = {}
 
+with open('active.json') as infile:
+    active_data = json.load(infile)
+
+with open('upcoming.json') as infile:
+    upcoming_data = json.load(infile)
+
 def add_to_data_without_duplicates(data, key, value):
     # Strip whitespace and make name all lowercase to find clashes
     key = "".join(key.split()).lower().replace('.', '')
