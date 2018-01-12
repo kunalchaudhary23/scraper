@@ -36,6 +36,9 @@ def get_datapoint_closest_to_datetime(datapoints, datetime):
 def get_top_growth(data, amount, min_size, social_type, start_datetime, end_datetime): # Returns an array of keys of length amount with the highest designated social type's growth %
     key_to_growth = {}
     for key in data:
+        if 'stats' not in data[key]:
+            continue
+
         datapoints = data[key]['stats'][social_type]
         first_point = get_datapoint_closest_to_datetime(datapoints, start_datetime)
         last_point = get_datapoint_closest_to_datetime(datapoints, end_datetime)
@@ -51,6 +54,9 @@ def get_top_growth(data, amount, min_size, social_type, start_datetime, end_date
 def get_top(data, amount, social_type, start_datetime, end_datetime):
     key_to_size = {}
     for key in data:
+        if 'stats' not in data[key]:
+            continue
+            
         datapoints = data[key]['stats'][social_type]
         last_point = get_datapoint_closest_to_datetime(datapoints, end_datetime)
         if last_point:
