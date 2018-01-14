@@ -126,7 +126,7 @@ def format_keys(top_keys):
         details = get_ico_details(upcoming, key)
         format_tuple = (size)
         print(details) 
-        print('%i Twitter followers.' % format_tuple)
+        print('%i followers.' % format_tuple)
         print()
 
 with open('upcoming.json') as upcoming:
@@ -140,7 +140,7 @@ with open('upcoming.json') as upcoming:
             if key in upcoming:
                 upcoming[key]['stats'] = stats_dict['stats']
 
-        start_datetime = datetime.now() - timedelta(days=7)
+        start_datetime = datetime.now() - timedelta(days=5)
         end_datetime = datetime.now()
 
         top_twitter_growth_keys = get_top_growth(upcoming, 11, 100, 'twitter', start_datetime, end_datetime)
