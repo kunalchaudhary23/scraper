@@ -33,7 +33,7 @@ def scrape_telegram(data):
 	print(data)
 
 	for key in data:
-		if len(data[key]['telegram']) > 0:
+		if data[key]['telegram'] and len(data[key]['telegram']) > 0:
 			continue
 
 		url = data[key]['website']
@@ -56,7 +56,8 @@ def scrape_telegram(data):
 					pass
 
 			print('Getting telegram for %s : %s' % (key, telegram))
-			data[key]['telegram'] = telegram
+			if telegram:
+				data[key]['telegram'] = telegram
 		except:
 			pass
 
@@ -70,7 +71,7 @@ def scrape_twitter(data):
 	browser = webdriver.Chrome(chrome_options=options)
 
 	for key in data:
-		if len(data[key]['twitter']) > 0:
+		if data[key]['twitter'] and len(data[key]['twitter']) > 0:
 			continue
 
 		url = data[key]['website']
@@ -95,8 +96,8 @@ def scrape_twitter(data):
 				except:
 					pass
 
-			print('Getting twitter for %s : %s' % (key, twitter))
-			data[key]['twitter'] = twitter
+			if twitter:
+				data[key]['twitter'] = twitter
 		except:
 			pass
 
