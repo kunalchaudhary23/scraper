@@ -43,10 +43,10 @@ def save_social_stats(infile, outfile_name):
         else:
             social_stats[key] = existing_data['stats']
 
-        if len(ico['telegram']) > 0:
+        if ico['telegram'] and len(ico['telegram']) > 0:
             telegram_futures[key] = get_telegram_size(ico['telegram'])
 
-        if len(ico['twitter']) > 0:
+        if ico['twitter'] and len(ico['twitter']) > 0:
             twitter_futures[key] = get_twitter_size(ico['twitter'])
 
     for key in telegram_futures:
