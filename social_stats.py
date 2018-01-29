@@ -17,6 +17,8 @@ def get_telegram_size(url):
 		session = FuturesSession(max_workers=100)
 		if url[0] == '/':
 			url = 'http:' + url
+		elif url[0] != 'h':
+			return None
 		future = session.get(url, background_callback=parse_telegram_background)
 
 		return future
@@ -39,6 +41,8 @@ def get_twitter_size(url):
 		session = FuturesSession(max_workers=100)
 		if url[0] == '/':
 			url = 'http:' + url
+		elif url[0] != 'h':
+			return None
 		future = session.get(url, background_callback=parse_twitter_background)
 
 		return future
