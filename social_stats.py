@@ -13,11 +13,15 @@ def parse_telegram_background(session, response):
 		response.data = 'N/A'
 
 def get_telegram_size(url):
-	session = FuturesSession(max_workers=100)
-	if url[0] == '/':
-		url = 'http:' + url
-	future = session.get(url, background_callback=parse_telegram_background)
-	return future
+	try:
+		session = FuturesSession(max_workers=100)
+		if url[0] == '/':
+			url = 'http:' + url
+		future = session.get(url, background_callback=parse_telegram_background)
+
+		return future
+	except:
+		return None
 
 def parse_twitter_background(session, response):
 	try:
@@ -31,9 +35,12 @@ def parse_twitter_background(session, response):
 		response.data = 'N/A'
 
 def get_twitter_size(url):
-	session = FuturesSession(max_workers=100)
-	if url[0] == '/':
-		url = 'http:' + url
-	future = session.get(url, background_callback=parse_twitter_background)
+	try:
+		session = FuturesSession(max_workers=100)
+		if url[0] == '/':
+			url = 'http:' + url
+		future = session.get(url, background_callback=parse_twitter_background)
 
-	return future
+		return future
+	except:
+		return None

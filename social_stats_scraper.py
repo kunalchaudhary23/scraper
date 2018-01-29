@@ -50,10 +50,12 @@ def save_social_stats(infile, outfile_name):
             twitter_futures[key] = get_twitter_size(ico['twitter'])
 
     for key in telegram_futures:
-        social_stats[key]['telegram'].append((timestamp, telegram_futures[key].result().data))
+        if telegram_futures[key]:
+          social_stats[key]['telegram'].append((timestamp, telegram_futures[key].result().data))
         
     for key in twitter_futures:
-        social_stats[key]['twitter'].append((timestamp, twitter_futures[key].result().data))
+        if twitter_futures[key]:
+          social_stats[key]['twitter'].append((timestamp, twitter_futures[key].result().data))
 
     for key in social_stats:
         update_mongo(key, social_stats[key])
