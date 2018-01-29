@@ -14,9 +14,9 @@ def parse_telegram_background(session, response):
 
 def get_telegram_size(url):
 	session = FuturesSession(max_workers=100)
-	future = session.get(url, background_callback=parse_telegram_background)
-	if url[0] == '/':
+		if url[0] == '/':
 		url = 'http:' + url
+	future = session.get(url, background_callback=parse_telegram_background)
 	return future
 
 def parse_twitter_background(session, response):
