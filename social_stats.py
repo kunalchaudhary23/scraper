@@ -40,6 +40,8 @@ def get_twitter_size(url):
 	try:
 		session = FuturesSession(max_workers=100)
 		if url[0] == '/':
+			if url[2] == '/':
+				url = url[2:]
 			url = 'http:' + url
 		elif url[0] != 'h':
 			return None
