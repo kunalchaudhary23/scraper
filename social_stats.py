@@ -19,7 +19,7 @@ def get_telegram_size(url):
 			url = 'http:' + url
 		elif url[0] != 'h':
 			return None
-		future = session.get(url, background_callback=parse_telegram_background)
+		future = session.get(url, background_callback=parse_telegram_background, verify=False)
 
 		return future
 	except:
@@ -43,7 +43,7 @@ def get_twitter_size(url):
 			url = 'http:' + url
 		elif url[0] != 'h':
 			return None
-		future = session.get(url, background_callback=parse_twitter_background)
+		future = session.get(url, background_callback=parse_twitter_background, verify=False)
 
 		return future
 	except:
