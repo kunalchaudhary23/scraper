@@ -26,11 +26,11 @@ from selenium import webdriver
 # }
 
 def scrape_telegram(data):
-	webdriver.manage().timeouts().implicitlyWait(30);
 	options = webdriver.ChromeOptions()
 	options.add_argument('--headless')
 	options.add_argument('--no-sandbox')
 	browser = webdriver.Chrome(chrome_options=options)
+	browser.set_page_load_timeout(10)
 
 	for key in data:
 		if data[key]['telegram'] and len(data[key]['telegram']) > 0:
@@ -65,11 +65,11 @@ def scrape_telegram(data):
 	return data
 
 def scrape_twitter(data):
-	webdriver.manage().timeouts().implicitlyWait(30);
 	options = webdriver.ChromeOptions()
 	options.add_argument('--headless')
 	options.add_argument('--no-sandbox')
 	browser = webdriver.Chrome(chrome_options=options)
+	browser.set_page_load_timeout(10)
 
 	for key in data:
 		if data[key]['twitter'] and len(data[key]['twitter']) > 0:
