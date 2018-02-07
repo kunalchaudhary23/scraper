@@ -34,21 +34,24 @@ import time
 
 scraper_functions = [
     icoalert_pre_sale.get_icos,
-    # icoalert_normal.get_icos,
-    # coinschedule.get_icos,
-    # trackico.get_icos,
-    # icobench.get_icos,
-    # icodrops.get_icos
+    icoalert_normal.get_icos,
+    coinschedule.get_icos,
+    trackico.get_icos,
+    icobench.get_icos,
+    icodrops.get_icos
 ]
 
 active_data = {}
 upcoming_data = {}
 
-with open('active.json') as infile:
-    active_data = json.load(infile)
+try:
+    with open('active.json') as infile:
+        active_data = json.load(infile)
 
-with open('upcoming.json') as infile:
-    upcoming_data = json.load(infile)
+    with open('upcoming.json') as infile:
+        upcoming_data = json.load(infile)
+except:
+    pass
 
 def add_to_data_without_duplicates(data, key, value):
     # Strip whitespace and make name all lowercase to find clashes
