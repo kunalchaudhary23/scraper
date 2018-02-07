@@ -29,10 +29,11 @@ def scrape_telegram(data):
 	options = webdriver.ChromeOptions()
 	options.add_argument('--headless')
 	options.add_argument('--no-sandbox')
+
 	browser = webdriver.Chrome(chrome_options=options)
-	browser.set_page_load_timeout(10)
 
 	for key in data:
+		print(key)
 		if data[key]['telegram'] and len(data[key]['telegram']) > 0:
 			continue
 
@@ -61,7 +62,6 @@ def scrape_telegram(data):
 		except:
 			pass
 
-	browser.close()
 	return data
 
 def scrape_twitter(data):
@@ -69,9 +69,8 @@ def scrape_twitter(data):
 	options.add_argument('--headless')
 	options.add_argument('--no-sandbox')
 	browser = webdriver.Chrome(chrome_options=options)
-	browser.set_page_load_timeout(10)
-
 	for key in data:
+		print(key)
 		if data[key]['twitter'] and len(data[key]['twitter']) > 0:
 			continue
 
@@ -102,5 +101,4 @@ def scrape_twitter(data):
 		except:
 			pass
 
-	browser.close()
 	return data

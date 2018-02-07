@@ -33,7 +33,7 @@ def fill_telegram(url):
 	except:
 		pass
 
-print(fill_telegram('wepower.network'))
+print(fill_telegram('fair.game'))
 
 def fill_twitter(name, url):
 	try:
@@ -68,5 +68,3 @@ def fill_twitter(name, url):
 		return twitter
 	except:
 		pass
-
-print(fill_twitter('https://www.trevilabs.co/?utm_source=trackico'))

@@ -34,11 +34,11 @@ import time
 
 scraper_functions = [
     icoalert_pre_sale.get_icos,
-    icoalert_normal.get_icos,
-    coinschedule.get_icos,
-    trackico.get_icos,
-    icobench.get_icos,
-    icodrops.get_icos
+    # icoalert_normal.get_icos,
+    # coinschedule.get_icos,
+    # trackico.get_icos,
+    # icobench.get_icos,
+    # icodrops.get_icos
 ]
 
 active_data = {}

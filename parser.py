@@ -143,32 +143,32 @@ with open('upcoming.json') as upcoming:
         start_datetime = datetime.now() - timedelta(days=5)
         end_datetime = datetime.now()
 
-        top_twitter_growth_keys = get_top_growth(upcoming, 11, 100, 'twitter', start_datetime, end_datetime)
-        print('Top 10 ICOs with greatest Twitter growth percentage over the last week')
-        format_growth_keys(top_twitter_growth_keys)
+        # top_twitter_growth_keys = get_top_growth(upcoming, 11, 100, 'twitter', start_datetime, end_datetime)
+        # print('Top 10 ICOs with greatest Twitter growth percentage over the last week')
+        # format_growth_keys(top_twitter_growth_keys)
 
-        print('#####################')
-        print('#####################')
-        print('#####################')
+        # print('#####################')
+        # print('#####################')
+        # print('#####################')
 
-        top_twitter_keys = get_top(upcoming, 11, 'twitter', start_datetime, end_datetime)
-        print('Top 10 ICOs with the most Twitter followers')
+        top_twitter_keys = get_top(upcoming, 26, 'twitter', start_datetime, end_datetime)
+        print('Top 25 ICOs with the most Twitter followers')
         format_keys(top_twitter_keys)
 
         print('#####################')
         print('#####################')
         print('#####################')
 
-        top_telegram_growth_keys = get_top_growth(upcoming, 11, 100, 'telegram', start_datetime, end_datetime)
-        print('Top 10 ICOs with greatest Telegram growth percentage over the last week')
-        format_growth_keys(top_telegram_growth_keys)
+        # top_telegram_growth_keys = get_top_growth(upcoming, 11, 100, 'telegram', start_datetime, end_datetime)
+        # print('Top 10 ICOs with greatest Telegram growth percentage over the last week')
+        # format_growth_keys(top_telegram_growth_keys)
 
-        print('#####################')
-        print('#####################')
-        print('#####################')
+        # print('#####################')
+        # print('#####################')
+        # print('#####################')
 
-        top_telegram_keys = get_top(upcoming, 11, 'telegram', start_datetime, end_datetime)
-        print('Top 10 ICOs with the most Telegram followers')
+        top_telegram_keys = get_top(upcoming, 26, 'telegram', start_datetime, end_datetime)
+        print('Top 25 ICOs with the most Telegram followers')
         format_keys(top_telegram_keys)
 
         recent_keys = get_keys_in_range(upcoming, datetime.now() - timedelta(days=3), datetime.now())
