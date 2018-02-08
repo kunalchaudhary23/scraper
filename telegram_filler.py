@@ -33,7 +33,7 @@ def fill_telegram(url):
 	except:
 		pass
 
-print(fill_telegram('fair.game'))
+print(fill_telegram('geekzcode.com'))
 
 def fill_twitter(name, url):
 	try:

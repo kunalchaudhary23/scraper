@@ -71,14 +71,14 @@ for scraper_fn in scraper_functions:
     for ico in active:
         add_to_data_without_duplicates(active_data, ico['name'], ico)
 
-    active_data = fillers.scrape_telegram(active_data)
-    active_data = fillers.scrape_twitter(active_data)
+    #active_data = fillers.scrape_telegram(active_data)
+    #active_data = fillers.scrape_twitter(active_data)
 
     for ico in upcoming:
         add_to_data_without_duplicates(upcoming_data, ico['name'], ico)
 
-    upcoming_data = fillers.scrape_telegram(upcoming_data)
-    upcoming_data = fillers.scrape_twitter(upcoming_data)
+    #upcoming_data = fillers.scrape_telegram(upcoming_data)
+    #upcoming_data = fillers.scrape_twitter(upcoming_data)
 
 with open('active.json', 'w') as outfile:  
     json.dump(active_data, outfile)
